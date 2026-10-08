@@ -49,3 +49,7 @@ $env:DENO_SERVE_ADDRESS = "tcp:127.0.0.1:8787"; npx deno@2.5.6 run --allow-net s
 - **Testar RLS pelo SQL:** dentro de `begin … rollback`, usar `set local role authenticated` e `set_config('request.jwt.claims', '{"sub":"<uuid>","role":"authenticated"}', true)`.
 - **401 em duas camadas:** no Supabase, o gateway (`verify_jwt`) barra chamadas sem JWT antes da função; a função também confere o `Authorization` para não depender só disso. Conferir a presença do cabeçalho não valida o token.
 - **MCP com `?project_ref=` quebra o login OAuth** (`Resource must be a valid MCP endpoint`). Alternativa segura: token de acesso com permissão mínima.
+- **`innerHTML` com dado executa código:** um nome `<img src=x onerror=alert(1)>` disparou o alerta com `innerHTML`; com `textContent` apareceu como texto. Demonstração de falha nunca vai para commit.
+- **Varredura de segredos mostra tipo e local, nunca o valor:** mascarar dentro do próprio comando, antes de qualquer saída. O regex do `padroes.md` §9 só cobre `var/const/let` com aspas duplas; procurar também prefixos (`sb_secret_`, `sbp_`, `sk-`, JWT) e fallback literal em `os.environ.get`. Achado vai ao Guilherme no mesmo dia, com arquivo e linha.
+- **RLS transforma "não pode ver" em "não achou":** a consulta volta vazia, sem erro. Já um `permission denied` é falha e tem que aparecer como erro, nunca como lista vazia.
+- **Achado de revisão fora do escopo vira issue**, não correção no meio de outra tarefa.
