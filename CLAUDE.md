@@ -18,6 +18,20 @@ python -m http.server 8000
 
 E abra `http://localhost:8000/leads.html`.
 
+Antes de commitar uma tela, rode a skill `revisar-tela` (`.claude/skills/revisar-tela/`).
+
+## Supabase
+
+- **Projeto:** `sandbox-nexi` (`zrkkpmtvduskdsbkcuuu`), na organização pessoal. Nunca é o banco da Nexi.
+- **MCP:** `.mcp.json` aponta para `https://mcp.supabase.com/mcp` com login OAuth (`/mcp` → `supabase` → Authenticate). Funciona sem `project_ref` só porque a conta não participa de nenhuma organização da Nexi. **Se a conta entrar na organização da Nexi, troque por token de acesso com permissão mínima** (Project: Settings/Advisors/Logs em leitura; Database: SQL e Migrations em leitura e escrita), via variável de ambiente `SUPABASE_ACCESS_TOKEN`, nunca no arquivo.
+- **Bloqueios:** `.claude/settings.json` nega deploy de Edge Function, secrets, branches, criar/pausar projeto e `supabase db push`/`functions deploy`. Publicar é sempre manual e acompanhado.
+- **Migrations:** ficam em `supabase/migrations/` e são aplicadas pelo MCP (`apply_migration`). Depois de aplicar, rodar os advisors de segurança.
+- **Função local sem Docker:** o `supabase start` baixa de 5 a 8 GB. Para funções que não usam o banco, rode só o Deno (cerca de 100 MB), fora da porta 8000 do servidor das telas:
+
+```
+$env:DENO_SERVE_ADDRESS = "tcp:127.0.0.1:8787"; npx deno@2.5.6 run --allow-net supabase/functions/ola-nexi/index.ts
+```
+
 ## Aprendizados
 
 - **Contexto antes de pedir:** dizer o objetivo, as restrições (HTML/CSS/JS puros) e onde o código vai morar evita retrabalho.
@@ -28,3 +42,10 @@ E abra `http://localhost:8000/leads.html`.
 - **Dados com `textContent`:** nunca montar HTML com `innerHTML` a partir de dados externos.
 - **Atributo `hidden` + CSS:** um `display` no CSS anula o `hidden`; manter `[hidden] { display: none !important; }`.
 - **Celular primeiro:** testar no modo dispositivo do DevTools (Ctrl+Shift+M) e conferir que não há rolagem horizontal.
+- **Teste passando não prova que o arquivo mudou:** uma edição da IA pode ser desfeita no caminho (ex.: `\u0300` virando o caractere invisível). Confirmar no `git diff`.
+- **Caracteres invisíveis no código:** escrever faixas Unicode como escape (`/[\u0300-\u036f]/`), nunca o caractere colado.
+- **Grant antes de policy:** o Postgres confere primeiro o grant (o papel pode usar a tabela?) e só depois a policy de RLS (quais linhas?). Policy sem grant dá `permission denied for table`; com grant e fora da policy, a leitura volta vazia e a escrita dá `violates row-level security policy`.
+- **Grant automático do Supabase:** tabelas novas em `public` recebem grant para `anon` e `authenticated`. Na migration, `revoke all` primeiro e depois `grant` só o necessário.
+- **Testar RLS pelo SQL:** dentro de `begin … rollback`, usar `set local role authenticated` e `set_config('request.jwt.claims', '{"sub":"<uuid>","role":"authenticated"}', true)`.
+- **401 em duas camadas:** no Supabase, o gateway (`verify_jwt`) barra chamadas sem JWT antes da função; a função também confere o `Authorization` para não depender só disso. Conferir a presença do cabeçalho não valida o token.
+- **MCP com `?project_ref=` quebra o login OAuth** (`Resource must be a valid MCP endpoint`). Alternativa segura: token de acesso com permissão mínima.
