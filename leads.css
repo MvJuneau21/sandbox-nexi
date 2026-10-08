@@ -7,6 +7,14 @@
   --accent: #1f5fbf;
   --error-bg: #fdecec;
   --error-text: #8a1c1c;
+  --badge-novo-bg: #e3edfb;
+  --badge-novo-text: #1a4d99;
+  --badge-em-contato-bg: #fff3d6;
+  --badge-em-contato-text: #7a5300;
+  --badge-convertido-bg: #e1f4e6;
+  --badge-convertido-text: #1d6b34;
+  --badge-perdido-bg: #eceef1;
+  --badge-perdido-text: #4a515c;
 }
 
 *,
@@ -136,10 +144,10 @@ select {
   border-radius: 999px;
 }
 
-.badge--novo { background: #e3edfb; color: #1a4d99; }
-.badge--em-contato { background: #fff3d6; color: #7a5300; }
-.badge--convertido { background: #e1f4e6; color: #1d6b34; }
-.badge--perdido { background: #eceef1; color: #4a515c; }
+.badge--novo { background: var(--badge-novo-bg); color: var(--badge-novo-text); }
+.badge--em-contato { background: var(--badge-em-contato-bg); color: var(--badge-em-contato-text); }
+.badge--convertido { background: var(--badge-convertido-bg); color: var(--badge-convertido-text); }
+.badge--perdido { background: var(--badge-perdido-bg); color: var(--badge-perdido-text); }
 
 @media (min-width: 640px) {
   .filters {
