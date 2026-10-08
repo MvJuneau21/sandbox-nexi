@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leads | Sandbox Nexi</title>
+  <link rel="stylesheet" href="leads.css">
+  <script src="leads.js" defer></script>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html">&larr; Início</a>
+    <h1>Leads</h1>
+  </header>
+
+  <main>
+    <form id="filters" class="filters" role="search">
+      <div class="field">
+        <label for="search">Buscar por nome, empresa ou e-mail</label>
+        <input type="search" id="search" name="search" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="">Todos</option>
+          <option value="Novo">Novo</option>
+          <option value="Em contato">Em contato</option>
+          <option value="Convertido">Convertido</option>
+          <option value="Perdido">Perdido</option>
+        </select>
+      </div>
+    </form>
+
+    <p id="count" class="count" aria-live="polite"></p>
+    <p id="error" class="error" role="alert" hidden></p>
+    <p id="empty" class="empty" hidden>Nenhum lead encontrado.</p>
+
+    <ul id="lead-list" class="lead-list"></ul>
+  </main>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  { "id": 1, "name": "João Silva", "company": "Padaria Pão Quente", "email": "joao.silva@example.com", "status": "Novo", "createdAt": "2026-09-02" },
+  { "id": 2, "name": "Maria Oliveira", "company": "Oliveira Contabilidade", "email": "maria.oliveira@example.com", "status": "Em contato", "createdAt": "2026-09-05" },
+  { "id": 3, "name": "Carlos Souza", "company": "Souza Autopeças", "email": "carlos.souza@example.com", "status": "Convertido", "createdAt": "2026-09-08" },
+  { "id": 4, "name": "Ana Pereira", "company": "Estúdio Ana Design", "email": "ana.pereira@example.com", "status": "Perdido", "createdAt": "2026-09-10" },
+  { "id": 5, "name": "Lucas Ferreira", "company": "Ferreira Tech", "email": "lucas.ferreira@example.com", "status": "Novo", "createdAt": "2026-09-12" },
+  { "id": 6, "name": "Beatriz Costa", "company": "Clínica Bem Estar", "email": "beatriz.costa@example.com", "status": "Em contato", "createdAt": "2026-09-15" },
+  { "id": 7, "name": "Rafael Almeida", "company": "Almeida & Filhos", "email": "rafael.almeida@example.com", "status": "Convertido", "createdAt": "2026-09-18" },
+  { "id": 8, "name": "Juliana Ribeiro", "company": "Livraria Página Nova", "email": "juliana.ribeiro@example.com", "status": "Novo", "createdAt": "2026-09-20" },
+  { "id": 9, "name": "Pedro Gonçalves", "company": "Gonçalves Construções", "email": "pedro.goncalves@example.com", "status": "Perdido", "createdAt": "2026-09-23" },
+  { "id": 10, "name": "Fernanda Lima", "company": "Lima Moda Fitness", "email": "fernanda.lima@example.com", "status": "Em contato", "createdAt": "2026-09-26" },
+  { "id": 11, "name": "Thiago Martins", "company": "Café São Jorge", "email": "thiago.martins@example.com", "status": "Novo", "createdAt": "2026-09-30" },
+  { "id": 12, "name": "Camila Araújo", "company": "Araújo Pet Shop", "email": "camila.araujo@example.com", "status": "Convertido", "createdAt": "2026-10-03" }
+]
