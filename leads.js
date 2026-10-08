@@ -3,6 +3,7 @@ const DATA_URL = 'data/leads.json';
 const form = document.getElementById('filters');
 const searchInput = document.getElementById('search');
 const statusSelect = document.getElementById('status');
+const sortSelect = document.getElementById('sort');
 const countEl = document.getElementById('count');
 const errorEl = document.getElementById('error');
 const emptyEl = document.getElementById('empty');
@@ -24,6 +25,26 @@ function filterLeads(leads, query, status) {
   });
 }
 
+// createdAt is "YYYY-MM-DD", so plain string comparison already sorts by date.
+function sortLeads(leads, order) {
+  const sorted = [...leads];
+  if (order === 'name') {
+    sorted.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+  } else if (order === 'oldest') {
+    sorted.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  } else {
+    sorted.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
+  return sorted;
+}
+
+// Split the string instead of using new Date(), which would shift the day
+// back in negative UTC offsets like Brazil's.
+function formatDate(isoDate) {
+  const [year, month, day] = isoDate.split('-');
+  return `${day}/${month}/${year}`;
+}
+
 function statusClass(status) {
   return 'badge--' + normalize(status).replace(/\s+/g, '-');
 }
@@ -43,11 +64,18 @@ function createLeadItem(lead) {
   email.href = `mailto:${lead.email}`;
   email.textContent = lead.email;
 
+  const date = document.createElement('p');
+  date.className = 'lead-date';
+  const time = document.createElement('time');
+  time.dateTime = lead.createdAt;
+  time.textContent = formatDate(lead.createdAt);
+  date.append('Entrou em ', time);
+
   const badge = document.createElement('span');
   badge.className = `badge ${statusClass(lead.status)}`;
   badge.textContent = lead.status;
 
-  item.append(name, company, email, badge);
+  item.append(name, company, email, date, badge);
   return item;
 }
 
@@ -60,7 +88,8 @@ function renderLeads(leads) {
 }
 
 function update() {
-  renderLeads(filterLeads(allLeads, searchInput.value, statusSelect.value));
+  const filtered = filterLeads(allLeads, searchInput.value, statusSelect.value);
+  renderLeads(sortLeads(filtered, sortSelect.value));
 }
 
 function showError() {
@@ -92,5 +121,6 @@ async function loadLeads() {
 form.addEventListener('submit', (event) => event.preventDefault());
 searchInput.addEventListener('input', update);
 statusSelect.addEventListener('change', update);
+sortSelect.addEventListener('change', update);
 
 loadLeads();
